@@ -70,13 +70,16 @@ def run_search():
     else:
       dfOut = dfOut2[dfOut2['Document Type'].isin(docList)]
 
-    dfOut['Count'] = dfOut['Count'].astype('int')
+    dfOut.loc[:, 'Count'] = dfOut['Count'].astype(int)
+
     print(list(dfOut.columns.values))
     cols1 = ['Product Category','Document Type','Status','Document Info #1','Document Info #2','Filename','Page Info #1','Page Info #2','Page #','Text','Filepath']
     cols2 = ['Product Name','Product Category','Document Type','Status','Document Info #1','Document Info #2','Page Info #1','Page Info #2','Page #','Text','Filepath']
     #cols = ['Product Category','Product Description','Filename','Page Title','Page Description','Page Description 2','Page Number']
-    df3 = dfOut.groupby('Product Name').sum().drop(columns = cols1)
-    df4 = dfOut.groupby('Filename').sum().drop(columns = cols2)
+    df3 = dfOut.groupby('Product Name')['Count'].sum().reset_index()
+
+    df4 = dfOut.groupby('Filename')['Count'].sum().reset_index()
+
     
     #dfLine = pd.DataFrame(columns = cols)
     #dfOut.to_csv(fOut)
