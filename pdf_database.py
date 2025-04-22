@@ -11,7 +11,7 @@ prdNum = 2
 bolList = []
 dtlList = []
 
-dfFile = 'DF_All_Products_9-27-2024.sav'
+dfFile = 'DF_All_Products_4-15-2025.sav'
 
 def convert_df(df):
     
@@ -70,13 +70,16 @@ def run_search():
     else:
       dfOut = dfOut2[dfOut2['Document Type'].isin(docList)]
 
-    dfOut['Count'] = dfOut['Count'].astype('int')
+    dfOut.loc[:, 'Count'] = dfOut['Count'].astype(int)
+
     print(list(dfOut.columns.values))
     cols1 = ['Product Category','Document Type','Status','Document Info #1','Document Info #2','Filename','Page Info #1','Page Info #2','Page #','Text','Filepath']
     cols2 = ['Product Name','Product Category','Document Type','Status','Document Info #1','Document Info #2','Page Info #1','Page Info #2','Page #','Text','Filepath']
     #cols = ['Product Category','Product Description','Filename','Page Title','Page Description','Page Description 2','Page Number']
-    df3 = dfOut.groupby('Product Name').sum().drop(columns = cols1)
-    df4 = dfOut.groupby('Filename').sum().drop(columns = cols2)
+    df3 = dfOut.groupby('Product Name')['Count'].sum().reset_index()
+
+    df4 = dfOut.groupby('Filename')['Count'].sum().reset_index()
+
     
     #dfLine = pd.DataFrame(columns = cols)
     #dfOut.to_csv(fOut)
@@ -112,7 +115,7 @@ with st.container():
     col1.title('Web Details Parts Search')
     col1.caption('')
     col1.caption('Contains web details, installation manuals, structural charts, and Florida Product Approvals')
-    col1.caption('Last Updated: 9/26/24')
+    col1.caption('Last Updated: 4-15-2025')
     col1.caption('')
 
 with st.container():
